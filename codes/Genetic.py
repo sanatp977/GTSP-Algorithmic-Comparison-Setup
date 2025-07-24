@@ -1,8 +1,53 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 import time
-from extendTSP import *
+# from extendTSP import *
+
+import json
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.join(base_dir, "..", "tsp_cases.json")
+
+try:
+    with open(json_path, "r") as f:
+        extendTSP_cases = json.load(f)
+except FileNotFoundError:
+    print("Error: 'tsp_cases.json' not found. Please ensure the file is in the correct directory.")
+    exit(1)
+except json.JSONDecodeError:
+    print("Error: 'tsp_cases.json' is not a valid JSON file.")
+    exit(1)
+
+for i, (city_position, goods_class, city_class) in enumerate(extendTSP_cases):
+    print(f"Test Case {i + 1}")
+    print("City positions:", city_position)
+    print("Goods:", goods_class)
+    print("Class:", city_class)
+    print()
+
+import math
+
+def record_distance(city_position):
+    city_num = len(city_position)
+    distance = [[0.0 for _ in range(city_num)] for _ in range(city_num)]
+    for i in range(city_num):
+        for j in range(i + 1, city_num):
+            dis = math.sqrt(
+                (city_position[i][0] - city_position[j][0]) ** 2 +
+                (city_position[i][1] - city_position[j][1]) ** 2
+            )
+            distance[i][j] = dis
+            distance[j][i] = dis
+    return distance
+
+def cal_cost(distance, path, goods_num):
+    total_cost = 0
+    for i in range(len(path) - 1):
+        total_cost += distance[path[i]][path[i+1]]
+    total_cost += distance[path[-1]][path[0]]
+    return total_cost
 
 def cal_popvalue(pop, distance, goods_num):
     return [cal_cost(distance, p, goods_num) for p in pop]
@@ -152,8 +197,11 @@ def run_ga(distance, city_class, iter_num=10000, pc=0.1, pm=0.8):
 def main():
     for i, (city_position, goods_class, city_class) in enumerate(extendTSP_cases):
         print(f"\n=== Running GA on Test Case {i + 1} ===")
-        print(f"\nNumber of goods = {len(goods_class)}")
-        print(f"\nNumber of cities = {len(city_class)}")
+        # Cities is stored in a 2D Array, split by good type
+        # Goods is a 1D Array of goods corresponding to each class index
+        # So len(goods_class) = Number of cities & len(city_class) = Number of goods
+        print(f"\nNumber of goods = {len(city_class)}")
+        print(f"\nNumber of cities = {len(goods_class)}")
         print(f"City positions:\n{city_position}")
         print(f"Goods class:\n{goods_class}")
         print(f"City class:\n{city_class}")
@@ -166,6 +214,7 @@ def main():
 
         print(f"Test Case {i + 1}: Best cost = {best_cost:.2f}")
         print(f"Time taken: {end_time - start_time:.4f} seconds")
+        print("\n\n\n\n")
 
 if __name__ == "__main__":
     main()
