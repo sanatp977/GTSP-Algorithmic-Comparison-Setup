@@ -51,7 +51,8 @@ def cal_cost(distance, path, goods_num):
 def simulated_annealing(distance, city_class, t_range=(1, 100), alpha=0.99, iter_num=1000):
     city_num = len(distance)
     goods_num = len(city_class)
-
+    # t_range = (1,100) creates a tuple with 1 at index 0, and 100 at index 1
+    # So initial temp becomes 100
     t = t_range[1]  # Initial temperature
 
     # Generate random initial solution
@@ -95,6 +96,7 @@ def simulated_annealing(distance, city_class, t_range=(1, 100), alpha=0.99, iter
 
             else:
                 while True:
+                    #What if I dont have >= 3 clusters --> ERROR?????
                     loc1 = int(np.ceil(np.random.rand() * (goods_num - 1)))
                     loc2 = int(np.ceil(np.random.rand() * (goods_num - 1)))
                     loc3 = int(np.ceil(np.random.rand() * (goods_num - 1)))

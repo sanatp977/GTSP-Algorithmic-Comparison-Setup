@@ -56,8 +56,10 @@ def generate_cases():
     extendTSP_cases = []
 
     # 🔁 Add 16 new generated test cases
-    for goods in (5, 10, 15, 20):
-        for city_num in (10, 15, 20, 25):
+    # Need to keep number of cities more than goods at all times
+    # Minimum number of goods is 3 due to functionality
+    for goods in (4, 6, 8, 10):
+        for city_num in (12,14,16,18):
             if goods <= city_num:
                 extendTSP_cases.append(gen_case(city_num, goods))
     return extendTSP_cases
@@ -97,8 +99,8 @@ if __name__ == "__main__":
     # will be the same every time the code is executed with the same seed.
     # When there is a need to change test cases, comment these 2 lines
     # After generated, place it back, run it again. Now its fixed
-    random.seed(42)
-    np.random.seed(42) 
+    ''' random.seed(42)
+    np.random.seed(42)  '''
 
     extendTSP_cases = generate_cases()
 

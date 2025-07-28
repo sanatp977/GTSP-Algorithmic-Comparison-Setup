@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 import time
+
 # from extendTSP import *
 
 import json
@@ -114,6 +115,7 @@ def mutation(pop, pm, popsize, goods_num, city_class, distance):
         if random.random() < pm:
             seed = np.random.rand()
             if 0.3 < seed < 0.7:
+                # Could be error if all have 1
                 while True:
                     goods = random.randrange(goods_num)
                     if len(city_class[goods]) > 1:
