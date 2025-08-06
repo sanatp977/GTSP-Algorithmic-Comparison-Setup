@@ -3,58 +3,90 @@
 import json
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-from matplotlib.widgets import Slider
+from matplotlib.widgets import Button
 import os
 
-# Path to tsp_cases.json (go up one folder)
+# Path to tsp_cases.json (outside the 'codes' folder)
 JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "tsp_cases.json")
 
-# Load the data
+# Load data
 with open(JSON_PATH, "r") as f:
     cases = json.load(f)
 
-# Set up color map
 NUM_COLORS = max(len(case[2]) for case in cases)
 colors = cm.get_cmap('tab20', NUM_COLORS)
 
-# Precompute label for each case
+# Prepare labels
 case_labels = [
     f"Goods: {len(city_class)}, Cities: {len(city_position)}"
     for city_position, goods_class, city_class in cases
 ]
 
-# Plot a single test case
+current_index = [0]  # Use list so we can mutate inside button callbacks
+
+# --- Plotting logic ---
 def plot_case(index):
-    plt.clf()
+    ax.clear()  # clear the axes properly
+
     city_position, goods_class, city_class = cases[index]
     x = [pos[0] for pos in city_position]
     y = [pos[1] for pos in city_position]
-    
+
+    # Collect points by goods class
+    class_points = {}
     for i, (xi, yi) in enumerate(zip(x, y)):
         g = goods_class[i]
-        plt.scatter(xi, yi, color=colors(g), s=80, label=f"Good {g}" if f"Good {g}" not in plt.gca().get_legend_handles_labels()[1] else "")
-        plt.text(xi + 0.5, yi + 0.5, str(i), fontsize=9)
-    
-    plt.title(f"Test Case #{index + 1}: {case_labels[index]}")
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.grid(True)
-    plt.legend(title="Goods Classes", bbox_to_anchor=(1.05, 1), loc='upper left')
+        if g not in class_points:
+            class_points[g] = []
+        class_points[g].append((xi, yi, i))
+
+    # Plot points ordered by goods class
+    for g in sorted(class_points.keys()):
+        x_vals = [p[0] for p in class_points[g]]
+        y_vals = [p[1] for p in class_points[g]]
+        ax.scatter(x_vals, y_vals, color=colors(g), label=f"Good {g}", s=80)
+        for xi, yi, idx in class_points[g]:
+            ax.text(xi + 0.5, yi + 0.5, str(idx), fontsize=9)
+
+    ax.set_title(f"Test Case #{index + 1}: {case_labels[index]}")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.grid(True)
+    ax.legend(title="Goods Classes", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    # Dynamically adjust limits with a margin
+    margin = 2
+    ax.set_xlim(min(x) - margin, max(x) + margin)
+    ax.set_ylim(min(y) - margin, max(y) + margin)
+
     plt.tight_layout()
     plt.draw()
 
-# Initial plot
+
+# --- Buttons ---
 fig, ax = plt.subplots()
-plt.subplots_adjust(bottom=0.2, right=0.75)
-plot_case(0)
+plt.subplots_adjust(bottom=0.12, right=0.75)
+plot_case(current_index[0])
 
-# Slider
-ax_slider = plt.axes([0.15, 0.05, 0.7, 0.03])
-slider = Slider(ax_slider, 'Case Index', 0, len(cases) - 1, valinit=0, valstep=1)
+# Button axes
+axprev = plt.axes([0.35, 0.01, 0.06, 0.025])  # [left, bottom, width, height]
+axnext = plt.axes([0.55, 0.01, 0.06, 0.025])
 
-def update(val):
-    plot_case(int(slider.val))
+bprev = Button(axprev, 'Previous')
+bnext = Button(axnext, 'Next')
 
-slider.on_changed(update)
+# Button handlers
+def next_case(event):
+    if current_index[0] < len(cases) - 1:
+        current_index[0] += 1
+        plot_case(current_index[0])
+
+def prev_case(event):
+    if current_index[0] > 0:
+        current_index[0] -= 1
+        plot_case(current_index[0])
+
+bnext.on_clicked(next_case)
+bprev.on_clicked(prev_case)
 
 plt.show()
