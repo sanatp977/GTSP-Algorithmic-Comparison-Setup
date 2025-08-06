@@ -28,30 +28,6 @@ def gen_case(city_num, goods_num, x_range=30, y_range=30):
     return city_position, goods_class, city_class
 
 # Your existing 5 test cases (unchanged)
-''' RAND_CASES = [
-    [(21, 30), (27, 46), (80, 59), (59, 55), (40, 75), (39, 35), (53, 65), (41, 53), (40, 76), (15, 52)],
-    [(81, 34), (59, 57), (41, 19), (66, 76), (33, 41), (94, 66), (55, 74), (53, 49), (91, 55), (35, 83)],
-    [(90, 45), (56, 27), (55, 65), (16, 26), (92, 69), (80, 94), (19, 61), (63, 20), (94, 41), (52, 77)],
-    [(49, 50), (28, 43), (57, 98), (91, 42), (32, 67), (96, 88), (38, 90), (90, 34), (93, 76), (63, 63)],
-    [(58, 84), (18, 18), (82, 23), (75, 43), (21, 32), (35, 53), (96, 36), (51, 29), (36, 66), (93, 30)],
-]
-
-GOODS_CASES = [
-    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
-    [0, 0, 1, 1, 2, 2, 3, 3, 4, 4],
-    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
-    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
-    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
-]
-
-for i in range(5):
-    city_position = RAND_CASES[i]
-    goods_class = GOODS_CASES[i]
-    city_class = classify_city(goods_class)
-    extendTSP_cases.append((city_position, goods_class, city_class))
-
-'''
-
 def generate_cases():
     extendTSP_cases = []
 
