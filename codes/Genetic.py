@@ -204,9 +204,10 @@ def main():
         # So len(goods_class) = Number of cities & len(city_class) = Number of goods
         print(f"\nNumber of goods = {len(city_class)}")
         print(f"\nNumber of cities = {len(goods_class)}")
-        print(f"City positions:\n{city_position}")
-        print(f"Goods class:\n{goods_class}")
-        print(f"City class:\n{city_class}")
+        # Commented lines for printing the class & positions:
+        # print(f"City positions:\n{city_position}")
+        # print(f"Goods class:\n{goods_class}")
+        # print(f"City class:\n{city_class}")
 
         distance = record_distance(city_position)
 

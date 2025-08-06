@@ -69,8 +69,9 @@ plt.subplots_adjust(bottom=0.12, right=0.75)
 plot_case(current_index[0])
 
 # Button axes
-axprev = plt.axes([0.35, 0.01, 0.06, 0.025])  # [left, bottom, width, height]
-axnext = plt.axes([0.55, 0.01, 0.06, 0.025])
+# Make these larger if required to clearly show previous and next button
+axprev = plt.axes([0.35, 0.0002, 0.06, 0.005])  # [left, bottom, width, height]
+axnext = plt.axes([0.55, 0.0002, 0.06, 0.005])
 
 bprev = Button(axprev, 'Previous')
 bnext = Button(axnext, 'Next')
