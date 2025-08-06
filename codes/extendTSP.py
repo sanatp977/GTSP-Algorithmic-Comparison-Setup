@@ -34,8 +34,8 @@ def generate_cases():
     # 🔁 Add 16 new generated test cases
     # Need to keep number of cities more than goods at all times
     # Minimum number of goods is 3 due to functionality
-    for goods in (4, 6, 8, 10):
-        for city_num in (12,14,16,18):
+    for goods in (4, 6, 8, 10, 12, 14):
+        for city_num in (16, 20, 24, 28, 32, 36):
             if goods <= city_num:
                 extendTSP_cases.append(gen_case(city_num, goods))
     return extendTSP_cases

@@ -44,7 +44,7 @@ def plot_case(index):
     for g in sorted(class_points.keys()):
         x_vals = [p[0] for p in class_points[g]]
         y_vals = [p[1] for p in class_points[g]]
-        ax.scatter(x_vals, y_vals, color=colors(g), label=f"Good {g}", s=80)
+        ax.scatter(x_vals, y_vals, color=colors(g), label=f"Good {g + 1}", s=80)
         for xi, yi, idx in class_points[g]:
             ax.text(xi + 0.5, yi + 0.5, str(idx), fontsize=9)
 
